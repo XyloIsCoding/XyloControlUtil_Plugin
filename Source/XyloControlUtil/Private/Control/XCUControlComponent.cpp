@@ -39,10 +39,18 @@ const UInputAction* UXCUControlComponent::GetInputActionForInputTag(const AActor
 {
 	if (!Actor) return nullptr;
 	
-	const UXCUControlComponent* ControlComponent = FindControlComponent(Actor);
-	if (ControlComponent && ControlComponent->InputConfig)
+	if (const UXCUControlComponent* ControlComponent = FindControlComponent(Actor))
 	{
-		return ControlComponent->InputConfig->FindInputActionForTag(InputTag);
+		for (const FXCUInputMappingContext& Mapping : ControlComponent->DefaultInputMappings)
+		{
+			if (const UXCUInputConfig* InputConfig = Mapping.InputConfig.Get())
+			{
+				if (const UInputAction* IA = InputConfig->FindInputActionForTag(InputTag))
+				{
+					return IA;
+				}
+			}
+		}
 	}
 	return nullptr;
 }
@@ -82,9 +90,9 @@ void UXCUControlComponent::InitializePlayerInput(UInputComponent* PlayerInputCom
 	Subsystem->ClearAllMappings();
 	
 	
-	if (InputConfig)
+	for (const FXCUInputMappingContext& Mapping : DefaultInputMappings)
 	{
-		for (const FXCUInputMappingContext& Mapping : DefaultInputMappings)
+		if (UXCUInputConfig* InputConfig = Mapping.InputConfig.Get())
 		{
 			if (UInputMappingContext* IMC = Mapping.InputMapping.Get())
 			{
@@ -94,25 +102,24 @@ void UXCUControlComponent::InitializePlayerInput(UInputComponent* PlayerInputCom
 					{
 						Settings->RegisterInputMappingContext(IMC);
 					}
-					
+				
 					FModifyContextOptions Options = {};
 					Options.bIgnoreAllPressedKeysUntilRelease = false;
 					// Actually add the config to the local player							
 					Subsystem->AddMappingContext(IMC, Mapping.Priority, Options);
 				}
 			}
-		}
+			UXCUInputComponent* XCUIC = Cast<UXCUInputComponent>(PlayerInputComponent);
+			if (ensureMsgf(XCUIC, TEXT("Unexpected Input Component class! The Gameplay Abilities will not be bound to their inputs. Change the input component to UXCUInputComponent or a subclass of it.")))
+			{
+				// Add the key mappings that may have been set by the player
+				XCUIC->AddInputMappings(InputConfig, Subsystem);
 
-		UXCUInputComponent* XCUIC = Cast<UXCUInputComponent>(PlayerInputComponent);
-		if (ensureMsgf(XCUIC, TEXT("Unexpected Input Component class! The Gameplay Abilities will not be bound to their inputs. Change the input component to UXCUInputComponent or a subclass of it.")))
-		{
-			// Add the key mappings that may have been set by the player
-			XCUIC->AddInputMappings(InputConfig, Subsystem);
-
-			// This is where we actually bind and input action to a gameplay tag, which means that Gameplay Ability Blueprints will
-			// be triggered directly by these input actions Triggered events. 
-			TArray<uint32> BindHandles;
-			XCUIC->BindActions(InputConfig, this, &ThisClass::Input_AbilityInputTagTriggered, &ThisClass::Input_AbilityInputTagStarted, &ThisClass::Input_AbilityInputTagOngoing, &ThisClass::Input_AbilityInputTagCompleted, &ThisClass::Input_AbilityInputTagCanceled, /*out*/ BindHandles);
+				// This is where we actually bind and input action to a gameplay tag, which means that Gameplay Ability Blueprints will
+				// be triggered directly by these input actions Triggered events. 
+				TArray<uint32> BindHandles;
+				XCUIC->BindActions(InputConfig, this, &ThisClass::Input_AbilityInputTagTriggered, &ThisClass::Input_AbilityInputTagStarted, &ThisClass::Input_AbilityInputTagOngoing, &ThisClass::Input_AbilityInputTagCompleted, &ThisClass::Input_AbilityInputTagCanceled, /*out*/ BindHandles);
+			}
 		}
 	}
 }

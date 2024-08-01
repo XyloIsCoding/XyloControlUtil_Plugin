@@ -6,7 +6,6 @@
 #include "Components/PawnComponent.h"
 #include "XCUControlComponent.generated.h"
 
-
 class UInputAction;
 struct FInputActionValue;
 struct FGameplayTag;
@@ -22,6 +21,10 @@ struct FXCUInputMappingContext
 	UPROPERTY(EditAnywhere, Category="Input", meta=(AssetBundles="Client,Server"))
 	TObjectPtr<UInputMappingContext> InputMapping;
 
+	// Input configuration used by player controlled pawns to create input mappings and bind input actions.
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UXCUInputConfig> InputConfig;
+	
 	// Higher priority input mappings will be prioritized over mappings with a lower priority.
 	UPROPERTY(EditAnywhere, Category="Input")
 	int32 Priority = 0;
@@ -75,13 +78,11 @@ public:
 	/* Mapping Context */
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TArray<FXCUInputMappingContext> DefaultInputMappings;
-	
-	// Input configuration used by player controlled pawns to create input mappings and bind input actions.
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UXCUInputConfig> InputConfig;
-	
+
 public:
 	virtual void InitializePlayerInput(UInputComponent* PlayerInputComponent);
+
+	// TODO: make it take a FXCUInputMappingContext, so it adds/removes both input mapping and input config
 	/** Adds mode-specific input config */
 	void AddAdditionalInputConfig(const UXCUInputConfig* InputConfig);
 	/** Removes a mode-specific input config if it has been added */
