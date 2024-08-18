@@ -1,0 +1,28 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "Input/XCUInputBlueprintLibrary.h"
+#include "EnhancedInputSubsystems.h"
+#include "Kismet/GameplayStatics.h"
+
+bool UXCUInputBlueprintLibrary::GetKeyForInputAction(FText& KeyName, const UObject* WorldContextObject, const UInputAction* InputAction)
+{
+	if (!InputAction || !WorldContextObject) return false;
+	
+	if (const APlayerController* PlayerController = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
+	{
+		if (const ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer())
+		{
+			if (const UEnhancedInputLocalPlayerSubsystem* EnhancedInput = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
+			{
+				TArray<FKey> Keys = EnhancedInput->QueryKeysMappedToAction(InputAction); //TODO: System to find right key to display
+				for (FKey Key : Keys)
+				{
+					KeyName = Key.GetDisplayName();
+					return true; 
+				}
+			}
+		}
+	}
+	return false;
+}
