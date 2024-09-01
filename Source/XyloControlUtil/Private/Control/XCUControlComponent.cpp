@@ -118,7 +118,7 @@ void UXCUControlComponent::InitializePlayerInput(UInputComponent* PlayerInputCom
 				// This is where we actually bind and input action to a gameplay tag, which means that Gameplay Ability Blueprints will
 				// be triggered directly by these input actions Triggered events. 
 				TArray<uint32> BindHandles;
-				XCUIC->BindActions(InputConfig, this, &ThisClass::Input_AbilityInputTagTriggered, &ThisClass::Input_AbilityInputTagStarted, &ThisClass::Input_AbilityInputTagOngoing, &ThisClass::Input_AbilityInputTagCompleted, &ThisClass::Input_AbilityInputTagCanceled, /*out*/ BindHandles);
+				XCUIC->BindActions(InputConfig, this, &ThisClass::Input_InputTagTriggered, &ThisClass::Input_InputTagStarted, &ThisClass::Input_InputTagOngoing, &ThisClass::Input_InputTagCompleted, &ThisClass::Input_InputTagCanceled, /*out*/ BindHandles);
 			}
 		}
 	}
@@ -146,7 +146,7 @@ void UXCUControlComponent::AddAdditionalInputConfig(const UXCUInputConfig* NewIn
     UXCUInputComponent* XCUIC = Pawn->FindComponentByClass<UXCUInputComponent>();
     if (ensureMsgf(XCUIC, TEXT("Unexpected Input Component class! The Gameplay Abilities will not be bound to their inputs. Change the input component to UXCUICInputComponent or a subclass of it.")))
     {
-    	XCUIC->BindActions(NewInputConfig, this, &ThisClass::Input_AbilityInputTagTriggered, &ThisClass::Input_AbilityInputTagStarted, &ThisClass::Input_AbilityInputTagOngoing, &ThisClass::Input_AbilityInputTagCompleted, &ThisClass::Input_AbilityInputTagCanceled, /*out*/ BindHandles);
+    	XCUIC->BindActions(NewInputConfig, this, &ThisClass::Input_InputTagTriggered, &ThisClass::Input_InputTagStarted, &ThisClass::Input_InputTagOngoing, &ThisClass::Input_InputTagCompleted, &ThisClass::Input_InputTagCanceled, /*out*/ BindHandles);
     }
 }
 
@@ -155,48 +155,48 @@ void UXCUControlComponent::RemoveAdditionalInputConfig(const UXCUInputConfig* Re
 	//@TODO: Implement
 }
 
-void UXCUControlComponent::Input_AbilityInputTagTriggered(const FInputActionValue& Value, FGameplayTag InputTag)
+void UXCUControlComponent::Input_InputTagTriggered(const FInputActionValue& Value, FGameplayTag InputTag)
 {
 	// Interface Call
 	if (GetControlInterface())
 	{
-		ControlInterface->Input_AbilityInputTagTriggered(Value, InputTag);
+		ControlInterface->Execute_Input_InputTagTriggered(GetOwner(), Value, InputTag);
 	}
 }
 
-void UXCUControlComponent::Input_AbilityInputTagStarted(const FInputActionValue& Value, FGameplayTag InputTag)
+void UXCUControlComponent::Input_InputTagStarted(const FInputActionValue& Value, FGameplayTag InputTag)
 {
 	// Interface Call
 	if (GetControlInterface())
 	{
-		ControlInterface->Input_AbilityInputTagStarted(Value, InputTag);
+		ControlInterface->Execute_Input_InputTagStarted(GetOwner(), Value, InputTag);
 	}
 }
 
-void UXCUControlComponent::Input_AbilityInputTagOngoing(const FInputActionValue& Value, FGameplayTag InputTag)
+void UXCUControlComponent::Input_InputTagOngoing(const FInputActionValue& Value, FGameplayTag InputTag)
 {
 	// Interface Call
 	if (GetControlInterface())
 	{
-		ControlInterface->Input_AbilityInputTagOngoing(Value, InputTag);
+		ControlInterface->Execute_Input_InputTagOngoing(GetOwner(), Value, InputTag);
 	}
 }
 
-void UXCUControlComponent::Input_AbilityInputTagCompleted(const FInputActionValue& Value, FGameplayTag InputTag)
+void UXCUControlComponent::Input_InputTagCompleted(const FInputActionValue& Value, FGameplayTag InputTag)
 {
 	// Interface Call
 	if (GetControlInterface())
 	{
-		ControlInterface->Input_AbilityInputTagCompleted(Value, InputTag);
+		ControlInterface->Execute_Input_InputTagCompleted(GetOwner(), Value, InputTag);
 	}
 }
 
-void UXCUControlComponent::Input_AbilityInputTagCanceled(const FInputActionValue& Value, FGameplayTag InputTag)
+void UXCUControlComponent::Input_InputTagCanceled(const FInputActionValue& Value, FGameplayTag InputTag)
 {
 	// Interface Call
 	if (GetControlInterface())
 	{
-		ControlInterface->Input_AbilityInputTagCanceled(Value, InputTag);
+		ControlInterface->Execute_Input_InputTagCanceled(GetOwner(), Value, InputTag);
 	}
 }
 

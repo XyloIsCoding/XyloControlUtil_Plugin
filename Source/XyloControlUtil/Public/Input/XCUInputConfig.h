@@ -14,7 +14,7 @@ struct FFrame;
 /**
  * FXCUInputAction
  *
- *	Struct used to map a input action to a gameplay input tag.
+ *	Struct used to map an input action to a gameplay input tag.
  */
 USTRUCT(BlueprintType)
 struct FXCUInputAction

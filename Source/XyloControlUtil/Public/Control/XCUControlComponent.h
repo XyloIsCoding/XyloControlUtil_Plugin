@@ -13,7 +13,7 @@ class IXCUControlInterface;
 class UXCUInputConfig;
 class UInputMappingContext;
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FXCUInputMappingContext
 {
 	GENERATED_BODY()
@@ -35,6 +35,10 @@ struct FXCUInputMappingContext
 };
 
 
+/*
+ * Add this component to a character together with the control interface.
+ * Call InitializePlayerInput to activate the component.
+ */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class XYLOCONTROLUTIL_API UXCUControlComponent : public UPawnComponent
 {
@@ -63,7 +67,7 @@ public:
 	UFUNCTION(BlueprintPure, Category = "XCU|Control")
 	static UXCUControlComponent* FindControlComponent(const AActor* Actor) { return (Actor ? Actor->FindComponentByClass<UXCUControlComponent>() : nullptr); }
 
-	UFUNCTION(BlueprintPure)
+	UFUNCTION(BlueprintPure, Category = "Input")
 	static const UInputAction* GetInputActionForInputTag(const AActor* Actor, const FGameplayTag InputTag);
 	
 public:
@@ -71,29 +75,32 @@ public:
 private:
 	IXCUControlInterface* ControlInterface;
 
-	/*--------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------*/
 	/* Input */
 
 public:
-	/* Mapping Context */
+	/** Mapping Context */
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TArray<FXCUInputMappingContext> DefaultInputMappings;
 
 public:
+	/** Call to initialize component */
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	virtual void InitializePlayerInput(UInputComponent* PlayerInputComponent);
-
-	// TODO: make it take a FXCUInputMappingContext, so it adds/removes both input mapping and input config
+	
 	/** Adds mode-specific input config */
-	void AddAdditionalInputConfig(const UXCUInputConfig* InputConfig);
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void AddAdditionalInputConfig(const UXCUInputConfig* InputConfig); // TODO: make it take a FXCUInputMappingContext, so it adds/removes both input mapping and input config
 	/** Removes a mode-specific input config if it has been added */
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void RemoveAdditionalInputConfig(const UXCUInputConfig* InputConfig);
 	
-	
-	virtual void Input_AbilityInputTagTriggered(const FInputActionValue& Value, FGameplayTag InputTag);
-	virtual void Input_AbilityInputTagStarted(const FInputActionValue& Value, FGameplayTag InputTag);
-	virtual void Input_AbilityInputTagOngoing(const FInputActionValue& Value, FGameplayTag InputTag);
-	virtual void Input_AbilityInputTagCompleted(const FInputActionValue& Value, FGameplayTag InputTag);
-	virtual void Input_AbilityInputTagCanceled(const FInputActionValue& Value, FGameplayTag InputTag);
+protected:
+	virtual void Input_InputTagTriggered(const FInputActionValue& Value, FGameplayTag InputTag);
+	virtual void Input_InputTagStarted(const FInputActionValue& Value, FGameplayTag InputTag);
+	virtual void Input_InputTagOngoing(const FInputActionValue& Value, FGameplayTag InputTag);
+	virtual void Input_InputTagCompleted(const FInputActionValue& Value, FGameplayTag InputTag);
+	virtual void Input_InputTagCanceled(const FInputActionValue& Value, FGameplayTag InputTag);
 	
 /*--------------------------------------------------------------------------------------------------------------------*/
 	
