@@ -30,17 +30,17 @@ public:
 
 	/** Called by Control Component */
 	UFUNCTION(BlueprintNativeEvent, Category = "Input")
-	void Input_InputTagTriggered(const FInputActionValue& Value, FGameplayTag InputTag);
+	void OnInputTagTriggered(const FInputActionValue& Value, FGameplayTag InputTag);
 	/** Called by Control Component */
 	UFUNCTION(BlueprintNativeEvent, Category = "Input")
-	void Input_InputTagStarted(const FInputActionValue& Value, FGameplayTag InputTag);
+	void OnInputTagStarted(const FInputActionValue& Value, FGameplayTag InputTag);
 	/** Called by Control Component */
 	UFUNCTION(BlueprintNativeEvent, Category = "Input")
-	void Input_InputTagOngoing(const FInputActionValue& Value, FGameplayTag InputTag);
+	void OnInputTagOngoing(const FInputActionValue& Value, FGameplayTag InputTag);
 	/** Called by Control Component */
 	UFUNCTION(BlueprintNativeEvent, Category = "Input")
-	void Input_InputTagCompleted(const FInputActionValue& Value, FGameplayTag InputTag);
+	void OnInputTagCompleted(const FInputActionValue& Value, FGameplayTag InputTag);
 	/** Called by Control Component */
 	UFUNCTION(BlueprintNativeEvent, Category = "Input")
-	void Input_InputTagCanceled(const FInputActionValue& Value, FGameplayTag InputTag);
+	void OnInputTagCanceled(const FInputActionValue& Value, FGameplayTag InputTag);
 };

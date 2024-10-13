@@ -118,7 +118,7 @@ void UXCUControlComponent::InitializePlayerInput(UInputComponent* PlayerInputCom
 				// This is where we actually bind and input action to a gameplay tag, which means that Gameplay Ability Blueprints will
 				// be triggered directly by these input actions Triggered events. 
 				TArray<uint32> BindHandles;
-				XCUIC->BindActions(InputConfig, this, &ThisClass::Input_InputTagTriggered, &ThisClass::Input_InputTagStarted, &ThisClass::Input_InputTagOngoing, &ThisClass::Input_InputTagCompleted, &ThisClass::Input_InputTagCanceled, /*out*/ BindHandles);
+				XCUIC->BindActions(InputConfig, this, &ThisClass::OnInputTagTriggered, &ThisClass::OnInputTagStarted, &ThisClass::OnInputTagOngoing, &ThisClass::OnInputTagCompleted, &ThisClass::OnInputTagCanceled, /*out*/ BindHandles);
 			}
 		}
 	}
@@ -146,7 +146,7 @@ void UXCUControlComponent::AddAdditionalInputConfig(const UXCUInputConfig* NewIn
     UXCUInputComponent* XCUIC = Pawn->FindComponentByClass<UXCUInputComponent>();
     if (ensureMsgf(XCUIC, TEXT("Unexpected Input Component class! The Gameplay Abilities will not be bound to their inputs. Change the input component to UXCUICInputComponent or a subclass of it.")))
     {
-    	XCUIC->BindActions(NewInputConfig, this, &ThisClass::Input_InputTagTriggered, &ThisClass::Input_InputTagStarted, &ThisClass::Input_InputTagOngoing, &ThisClass::Input_InputTagCompleted, &ThisClass::Input_InputTagCanceled, /*out*/ BindHandles);
+    	XCUIC->BindActions(NewInputConfig, this, &ThisClass::OnInputTagTriggered, &ThisClass::OnInputTagStarted, &ThisClass::OnInputTagOngoing, &ThisClass::OnInputTagCompleted, &ThisClass::OnInputTagCanceled, /*out*/ BindHandles);
     }
 }
 
@@ -155,48 +155,48 @@ void UXCUControlComponent::RemoveAdditionalInputConfig(const UXCUInputConfig* Re
 	//@TODO: Implement
 }
 
-void UXCUControlComponent::Input_InputTagTriggered(const FInputActionValue& Value, FGameplayTag InputTag)
+void UXCUControlComponent::OnInputTagTriggered(const FInputActionValue& Value, FGameplayTag InputTag)
 {
 	// Interface Call
 	if (GetControlInterface())
 	{
-		ControlInterface->Execute_Input_InputTagTriggered(GetOwner(), Value, InputTag);
+		ControlInterface->Execute_OnInputTagTriggered(GetOwner(), Value, InputTag);
 	}
 }
 
-void UXCUControlComponent::Input_InputTagStarted(const FInputActionValue& Value, FGameplayTag InputTag)
+void UXCUControlComponent::OnInputTagStarted(const FInputActionValue& Value, FGameplayTag InputTag)
 {
 	// Interface Call
 	if (GetControlInterface())
 	{
-		ControlInterface->Execute_Input_InputTagStarted(GetOwner(), Value, InputTag);
+		ControlInterface->Execute_OnInputTagStarted(GetOwner(), Value, InputTag);
 	}
 }
 
-void UXCUControlComponent::Input_InputTagOngoing(const FInputActionValue& Value, FGameplayTag InputTag)
+void UXCUControlComponent::OnInputTagOngoing(const FInputActionValue& Value, FGameplayTag InputTag)
 {
 	// Interface Call
 	if (GetControlInterface())
 	{
-		ControlInterface->Execute_Input_InputTagOngoing(GetOwner(), Value, InputTag);
+		ControlInterface->Execute_OnInputTagOngoing(GetOwner(), Value, InputTag);
 	}
 }
 
-void UXCUControlComponent::Input_InputTagCompleted(const FInputActionValue& Value, FGameplayTag InputTag)
+void UXCUControlComponent::OnInputTagCompleted(const FInputActionValue& Value, FGameplayTag InputTag)
 {
 	// Interface Call
 	if (GetControlInterface())
 	{
-		ControlInterface->Execute_Input_InputTagCompleted(GetOwner(), Value, InputTag);
+		ControlInterface->Execute_OnInputTagCompleted(GetOwner(), Value, InputTag);
 	}
 }
 
-void UXCUControlComponent::Input_InputTagCanceled(const FInputActionValue& Value, FGameplayTag InputTag)
+void UXCUControlComponent::OnInputTagCanceled(const FInputActionValue& Value, FGameplayTag InputTag)
 {
 	// Interface Call
 	if (GetControlInterface())
 	{
-		ControlInterface->Execute_Input_InputTagCanceled(GetOwner(), Value, InputTag);
+		ControlInterface->Execute_OnInputTagCanceled(GetOwner(), Value, InputTag);
 	}
 }
 

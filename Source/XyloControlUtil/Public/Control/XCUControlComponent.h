@@ -96,11 +96,11 @@ public:
 	void RemoveAdditionalInputConfig(const UXCUInputConfig* InputConfig);
 	
 protected:
-	virtual void Input_InputTagTriggered(const FInputActionValue& Value, FGameplayTag InputTag);
-	virtual void Input_InputTagStarted(const FInputActionValue& Value, FGameplayTag InputTag);
-	virtual void Input_InputTagOngoing(const FInputActionValue& Value, FGameplayTag InputTag);
-	virtual void Input_InputTagCompleted(const FInputActionValue& Value, FGameplayTag InputTag);
-	virtual void Input_InputTagCanceled(const FInputActionValue& Value, FGameplayTag InputTag);
+	virtual void OnInputTagTriggered(const FInputActionValue& Value, FGameplayTag InputTag);
+	virtual void OnInputTagStarted(const FInputActionValue& Value, FGameplayTag InputTag);
+	virtual void OnInputTagOngoing(const FInputActionValue& Value, FGameplayTag InputTag);
+	virtual void OnInputTagCompleted(const FInputActionValue& Value, FGameplayTag InputTag);
+	virtual void OnInputTagCanceled(const FInputActionValue& Value, FGameplayTag InputTag);
 	
 /*--------------------------------------------------------------------------------------------------------------------*/
 	
