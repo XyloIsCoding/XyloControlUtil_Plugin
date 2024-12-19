@@ -27,7 +27,8 @@ class XYLOCONTROLUTIL_API IXCUControlInterface
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Input")
 	UXCUControlComponent* GetControlComponent() const;
-
+	virtual UXCUControlComponent* GetControlComponent_Implementation() const = 0;
+	
 	/** Called by Control Component */
 	UFUNCTION(BlueprintNativeEvent, Category = "Input")
 	void OnInputTagTriggered(const FInputActionValue& Value, FGameplayTag InputTag);
