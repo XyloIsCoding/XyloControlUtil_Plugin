@@ -26,7 +26,7 @@ class XYLOCONTROLUTIL_API IXCUControlInterface
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Input")
-	UXCUControlComponent* GetControlComponent();
+	UXCUControlComponent* GetControlComponent() const;
 
 	/** Called by Control Component */
 	UFUNCTION(BlueprintNativeEvent, Category = "Input")
