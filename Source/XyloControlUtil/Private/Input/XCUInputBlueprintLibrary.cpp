@@ -9,7 +9,7 @@ bool UXCUInputBlueprintLibrary::GetKeyForInputAction(FText& KeyName, const UObje
 {
 	if (!InputAction || !WorldContextObject) return false;
 	
-	if (const APlayerController* PlayerController = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
+	if (const APlayerController* PlayerController = UGameplayStatics::GetPlayerController(WorldContextObject, 0)) //TODO: change for local multiplayer
 	{
 		if (const ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer())
 		{
