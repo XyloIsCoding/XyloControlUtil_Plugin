@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "XCUInputBlueprintLibrary.generated.h"
+#include "XCUControlUtilLibrary.generated.h"
 
 class UInputAction;
 
@@ -12,7 +12,7 @@ class UInputAction;
  * 
  */
 UCLASS()
-class XYLOCONTROLUTIL_API UXCUInputBlueprintLibrary : public UBlueprintFunctionLibrary
+class XYLOCONTROLUTIL_API UXCUControlUtilLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 

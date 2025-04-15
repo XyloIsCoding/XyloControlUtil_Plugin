@@ -1,11 +1,11 @@
 // Copyright XyloIsCoding 2024
 
 
-#include "Input/XCUInputBlueprintLibrary.h"
+#include "Input/XCUControlUtilLibrary.h"
 #include "EnhancedInputSubsystems.h"
 #include "Kismet/GameplayStatics.h"
 
-bool UXCUInputBlueprintLibrary::GetKeyForInputAction(FText& KeyName, const UObject* WorldContextObject, const UInputAction* InputAction)
+bool UXCUControlUtilLibrary::GetKeyForInputAction(FText& KeyName, const UObject* WorldContextObject, const UInputAction* InputAction)
 {
 	if (!InputAction || !WorldContextObject) return false;
 	
